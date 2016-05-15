@@ -1,4 +1,4 @@
-local eventStream = require"fr.EventStream"
+local eventStream = require"fr.eventStream"
 
 local function fromTable(tab)
   local published = false
