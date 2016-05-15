@@ -3,10 +3,11 @@ FRLua
 =====
 
 FRLua is a library inspired by Bacon.js to provide Functional Reactive programming capabilities in Lua.
-It is targeted at luajit 2.x and lua 5.x.
-This is version 0.1 of the library.  This package uses semver.
+It is targeted at luajit 2.1 and lua >=5.1 <5.4.
+It is currently implemented in pure lua.
+This is version 0.1.0 of the library.  This package uses semver.
 
-Most of the API is very similar to that of Bacon.js, so if you are already familiar with Bacon.js, you should be able to jump right in.
+Most of the API is very similar to that of Bacon.js.
 
 ##Observables
 There are two main types of object provided by this library: EventStreams and Properties.
@@ -106,3 +107,5 @@ If the first character of the string is "'" then the remainder of the string is 
 If the string is "[" then the generated function performs indexing. If an additional argument is provided, it is used as the index.
 
 If the string is "]" then the generated function performs reversed indexing. The index is the first argument and the object is the second. If an additional argument is provided, it is used as the object.
+
+Any other type of value is wrapped as a constant.
