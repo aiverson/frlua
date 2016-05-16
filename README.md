@@ -77,6 +77,16 @@ func can be anything allowed by the function construction rules.
 
 `eventstream:zip(evenstream2, func)` Pair the events and invoke func with the values. Func can be anything allowed by the function construction rules. This method buffers the events from the streams until it has a corresponding event in the other stream, so if the streams emit at different rates, the buffer can get very large.
 
+`bus:push(val)` pushes the given value into the bus as a Next event.
+
+`bus:error(err)` pushes the given error into the bus.
+
+`bus:End([val])` pushes an End event into the bus with optional data.
+
+`bus:event(event, data)` pushes an event into the bus.
+
+`bus:plug(stream)` plugs a stream into the bus. Every event except the End event from the stream will be emitted by the bus. It returns a function that unplugs the stream.
+
 ###Functions
 
 ####Creation

@@ -1,6 +1,7 @@
 --Copyright 2016 Alex Iverson
 
 local eventStream = require"fr.eventStream"
+local tremove = table.remove
 
 local function Bus()
   local busEvent
@@ -66,6 +67,7 @@ local function Bus()
     end
     return function() unsubStream(stream) end
   end
+  newBus.tag = "bus"
   return newBus
 end
 
