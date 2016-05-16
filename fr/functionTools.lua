@@ -1,3 +1,5 @@
+--Copyright 2016 Alex Iverson
+
 local FT = {}
 local tunpack = table.unpack or unpack
 

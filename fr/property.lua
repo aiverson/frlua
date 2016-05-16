@@ -1,3 +1,4 @@
+--Copyright 2016 Alex Iverson
 
 local funcTools = require"fr.functionTools"
 local createFunction = funcTools.createFunction
@@ -314,7 +315,7 @@ PropertyMetatable = {
   end,
   __div = function(self, other)
     local prop = self:combine(other, div)
-    prop.tag = div
+    prop.tag = "property.div"
     return prop
   end,
   __type = "fr.property"

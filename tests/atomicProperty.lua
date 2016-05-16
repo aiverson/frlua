@@ -1,3 +1,5 @@
+--Copyright 2016 Alex Iverson
+
 local fr = require "fr"
 
 local bus = fr.Bus()

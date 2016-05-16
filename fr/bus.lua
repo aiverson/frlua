@@ -1,3 +1,5 @@
+--Copyright 2016 Alex Iverson
+
 local eventStream = require"fr.eventStream"
 
 local function Bus()

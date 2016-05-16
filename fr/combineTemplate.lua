@@ -1,3 +1,4 @@
+--Copyright 2016 Alex Iverson
 --credit to BaconJS for the algorithm
 
 local property = require "fr.property"

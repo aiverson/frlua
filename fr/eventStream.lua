@@ -1,3 +1,5 @@
+--Copyright 2016 Alex Iverson
+
 local tunpack = table.unpack or unpack
 local tremove = table.remove
 local tinsert = table.insert
