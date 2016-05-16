@@ -266,6 +266,29 @@ Property = {
       end,
       function() --[[print("onValue recieved preupdate")]] end)
   end,
+  onError = function(self, f, ...)
+    local errFunc = createFunction(f, ...)
+    return self:subscribe(function(event, ...)
+        if event == "Error" then
+          return errFunc(...)
+        else
+          return false
+        end
+      end,
+      function() end)
+  end,
+  onEnd = function(self, f, ...)
+    local endFunc = createFunction(f, ...)
+    return self:subscribe(function(event, ...)
+        if event == "End" then
+          endFunc(...)
+          return true
+        else
+          return false
+        end
+      end,
+      function() end)
+  end,
   map = function(self, f, ...)
     local mapFunc = createFunction(f, ...)
     local prop = propertyFromBinder(function(sink, preupdate, updateReady)
@@ -284,9 +307,72 @@ Property = {
     prop.tag = "property.map"
     return prop
   end,
+  mapError = function(self, f, ...)
+    local mapFunc = createFunction(f, ...)
+    local prop = propertyFromBinder(function(sink, preupdate, updateReady)
+        return self:subscribe(function(event, ...)
+            if event == "Error" then
+              if updateReady() then
+                return sink("Next", mapFunc(...))
+              end
+            else
+              if updateReady() then
+                return sink(event, ...)
+              end
+            end
+          end, preupdate)
+      end)
+    prop.tag = "property.map"
+    return prop
+  end,
   Not = function(self)
     return self:map(function(val) return not val end)
-  end
+  end,
+  And = function(self, other)
+    local prop = self:combine(other, function(a, b) return a and b end)
+    prop.tag = "property.And"
+    return prop
+  end,
+  Or = function(self, other)
+    local prop = self:combine(other, function(a, b) return a or b end)
+    prop.tag = "property.Or"
+    return prop
+  end,
+  Xor = function(self, other)
+    local prop = self:combine(other, function(a, b) return not a and b or not b and a end)
+    prop.tag = "property.Xor"
+    return prop
+  end,
+  eq = function(self, other)
+    local prop = self:combine(other, function(a, b) return a == b end)
+    prop.tag = "property.Eq"
+    return prop
+  end,
+  ne = function(self, other)
+    local prop = self:combine(other, function(a, b) return a ~= b end)
+    prop.tag = "property.Ne"
+    return prop
+  end,
+  gt = function(self, other)
+    local prop = self:combine(other, function(a, b) return a > b end)
+    prop.tag = "property.gt"
+    return prop
+  end,
+  lt = function(self, other)
+    local prop = self:combine(other, function(a, b) return a < b end)
+    prop.tag = "property.lt"
+    return prop
+  end,
+  ge = function(self, other)
+    local prop = self:combine(other, function(a, b) return a >= b end)
+    prop.tag = "property.ge"
+    return prop
+  end,
+  le = function(self, other)
+    local prop = self:combine(other, function(a, b) return a <= b end)
+    prop.tag = "property.le"
+    return prop
+  end,
 }
 
 Property.each = Property.onValue

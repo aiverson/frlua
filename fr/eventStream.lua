@@ -112,6 +112,18 @@ local EventStream = {
           end)
       end)
   end,
+  mapError = function(self, f, ...)
+    local mapFunc = createFunction(f, ...)
+    return fromBinder(function(sink)
+        return self:subscribe(function(event, ...)
+            if event == "Error" then
+              return sink("Next", mapFunc(...))
+            else
+              return sink(event, ...)
+            end
+          end)
+      end)
+  end,
   Not = function(self)
      return self:map(function(val) return not val end)
   end,

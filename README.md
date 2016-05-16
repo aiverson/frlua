@@ -5,7 +5,7 @@ FRLua
 FRLua is a library inspired by Bacon.js to provide Functional Reactive programming capabilities in Lua.
 It is targeted at luajit 2.1 and lua >=5.1 <5.4.
 It is currently implemented in pure lua.
-This is version 0.1.1 of the library.  This package uses semver.
+This is version 0.1.2 of the library.  This package uses semver.
 
 Most of the API is very similar to that of Bacon.js.
 
@@ -41,7 +41,33 @@ func can be anything allowed by the function construction rules.
 
 `observable:each(func)` synonym for onValue
 
+`observable:onError(func)` Invokes the provided function with every error produced by the observable. The function can be anything allowed by the function construction rules. It returns a function that removes the handler when called.
+
+`observable:onEnd(func)` Invokes the provided function at the end of the observable. The function can be anything allowed by the function construction rules. It returns a function that removes the handler when called.
+
+`observable:mapError(func)` Converts Error events into next events by passing the associated value to the provided function. The function construction rules apply.
+
+`observable:Not()` creates an observable that is equivalent to `observable:map(function(val) return not val end)`
+
 `prop:combine(prop2, func)` Combines the properties into a single property with the provided function. The function can be anything allowed by the function construction rules.
+
+`prop:And(prop2)` combines the properties with and.
+
+`prop:Or(prop2)` combines the properties with or.
+
+`prop:Xor(prop2)` combines the properties with xor.
+
+`prop:eq(prop2)` combines the properties with `==`.
+
+`prop:ne(prop2)` combines the properties with `~=`.
+
+`prop:gt(prop2)` combines the properties with `>`.
+
+`prop:lt(prop2)` combines the properties with `<`.
+
+`prop:ge(prop2)` combines the properties with `>=`.
+
+`prop:le(prop2)` combines the properties with `<=`.
 
 `eventstream:filter([func])` Filter the EventStream by the given predicate function. The function can be anything allowed by the function construction rules. If no function is provided the identity predicate is used, which falls back to lua's built in behavior. Everything except false and nil is regarded as true.
 
