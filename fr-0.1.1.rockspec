@@ -1,5 +1,5 @@
 package = "fr"
-version = "0.1.0-1"
+version = "0.1.1"
 source = {
   url = "git://github.com/aiverson/frlua.git"
 }
@@ -8,7 +8,7 @@ description = {
   detailed = [[FRLua is a library inspired by Bacon.js to provide Functional Reactive programming capabilities in Lua.
 It is targeted at luajit 2.1 and lua >=5.1 <5.4.
 It is currently implemented in pure lua.
-This is version 0.1.0 of the library.  This package uses semver.]],
+This package uses semver.]],
   homepage = "https://github.com/aiverson/frlua",
   license = "MIT",
   maintainer = "Alex Iverson <alexjiverson@gmail.com>"
