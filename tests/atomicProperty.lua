@@ -4,7 +4,7 @@ local bus = fr.Bus()
 
 fr.constant("test"):onValue(print)
 
-local prop = bus:toProperty();
+local prop = bus:toProperty(0);
 prop:onValue(print);
 prop.name = "busProp"
 

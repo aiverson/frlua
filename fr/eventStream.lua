@@ -335,7 +335,7 @@ EventStream.fromCallback = fromCallback
 
 EventStreamMetatable = {
   __index = EventStream,
-  __type = "EventStream"
+  __type = "fr.eventStream"
 }
 
 function EventStream.isEventStream(obj)

@@ -30,12 +30,10 @@ FR.constant = Property.constant
 FR.isEventStream = EventStream.isEventStream
 FR.isProperty = Property.isProperty
 
-function FR.isObservable(obj)
-   return FR.isEventStream(obj) or FR.isProperty(obj)
-end
+FR.isObservable = require"fr.isObservable"
 
 FR.combineAsArray = Property.combineAsArray
 
-require"fr.combineTemplate"(FR)
+FR.combineTemplate = require"fr.combineTemplate"
 
 return FR
