@@ -29,6 +29,8 @@ FR.fromCallback = EventStream.fromCallback
 
 FR.constant = Property.constant
 
+FR.propertyFromBinder = Property.fromBinder
+
 FR.isEventStream = EventStream.isEventStream
 FR.isProperty = Property.isProperty
 

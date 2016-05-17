@@ -5,7 +5,7 @@ FRLua
 FRLua is a library inspired by Bacon.js to provide Functional Reactive programming capabilities in Lua.
 It is targeted at luajit 2.1 and lua >=5.1 <5.4.
 It is currently implemented in pure lua.
-This is version 0.1.2 of the library.  This package uses semver.
+This is version 0.1.3 of the library.  This package uses semver.
 
 Most of the API is very similar to that of Bacon.js.
 
@@ -69,6 +69,16 @@ func can be anything allowed by the function construction rules.
 
 `prop:le(prop2)` combines the properties with `<=`.
 
+`prop1 + prop2` combines the properties with `+`.
+
+`prop1 - prop2` combines the properties with `-`.
+
+`prop1 * prop2` combines the properties with `*`.
+
+`prop1 / prop2` combines the properties with `/`.
+
+`prop:subscribe(handler, preupdate)` Subscribe to the Property with the specified event and preupdate handler. It returns a function to cancel the subscription. The preupdate function is guaranteed to be called before each update as soon as the Property is certain that it will update this tick. This allows the property combiners to avoid spurious updates.
+
 `eventstream:filter([func])` Filter the EventStream by the given predicate function. The function can be anything allowed by the function construction rules. If no function is provided the identity predicate is used, which falls back to lua's built in behavior. Everything except false and nil is regarded as true.
 
 `eventstream:flatMap(func)`  Map the events into other event streams, then merge the resulting event streams into a single event stream. The func can be anything allowed by the function construction rules.
@@ -76,6 +86,8 @@ func can be anything allowed by the function construction rules.
 `eventstream:skipDuplicates([eql])` Removes events that are equal to the previous event according to the provided equality predicate. If no predicate is provided the default `==` operator is used.
 
 `eventstream:zip(evenstream2, func)` Pair the events and invoke func with the values. Func can be anything allowed by the function construction rules. This method buffers the events from the streams until it has a corresponding event in the other stream, so if the streams emit at different rates, the buffer can get very large.
+
+`eventstream:subscribe(handler)` Subscribe to the EventStream with the given event handler. It returns a function that cancels the subscription. The handler is called with every event in the stream..
 
 `bus:push(val)` pushes the given value into the bus as a Next event.
 
@@ -104,6 +116,15 @@ func can be anything allowed by the function construction rules.
 `FR.fromCallback(func)` Invokes the provided function with a callback and creates an EventStream that emits the values passed to the callback.
 
 `FR.constant(value)` Creates a Property that holds the constant value.
+
+`FR.propertyFromBinder(func)` Creates a property from a binder function. The binder function has three arguments: a sink function, a preupdate function, and an updateReady function.
+The preupdate function must be called as soon as the property can be certain that it will generate an update this logical tick. It may be called multiple times for multiple inputs as long as each call has a paired updateReady call.
+The updateReady function must be called after preupdating. It returns a boolean indicating whether every incoming preupdate has had a corresponding updateReady call.
+The sink will propogate the event given to it to the properties subscribers as long as every pending preupdate has been readied.
+
+The additional functions are used to provide the atomicity guarantees in property combiners. The requirement that the preupdate must be called as soon as the property can be certain that it will generate an update this tick ensures that any Properties that subscribe to this property and a property that is one of its inputs will wait for both to update before updating, which prevents extra updates containing incorrect values. See the atomicProperty test to see this in action.
+
+This function is intended primarily for internal use. Generally, any uses of this function should either be accomplished with `fromBinder(func):toProperty(val)` or a standard property combiner. If neither of these solutions is applicable, please raise an issue.
 
 ####Manipulation
 

@@ -425,6 +425,8 @@ function Property.constant(value)
   return prop
 end
 
+Property.fromBinder = propertyFromBinder
+
 Property.fromEventStream = fromEventStream
 
 return Property
