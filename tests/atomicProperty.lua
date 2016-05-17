@@ -1,21 +1,21 @@
 --Copyright 2016 Alex Iverson
 
 local fr = require "fr"
+local test = require"tests.test"
 
-local bus = fr.Bus()
+test("atomic property updates", function(assertion)
+  local bus = fr.Bus()
 
-fr.constant("test"):onValue(print)
+  local prop = bus:toProperty(0);
+  prop.name = "busProp"
 
-local prop = bus:toProperty(0);
-prop:onValue(print);
-prop.name = "busProp"
+  local termAlpha = prop + fr.constant(3)
+  termAlpha.name = "Alpha"
+  local termBeta = prop + termAlpha
+  termBeta.name = "Beta"
+  local termGamma = prop + termBeta
+  termGamma.name = "Gamma"
+  termGamma:onValue(assertion:expectSequenceEqual{3, 18, 15, 21, 30, 24})
 
-local termAlpha = prop + fr.constant(3)
-termAlpha.name = "Alpha"
-local termBeta = prop + termAlpha
-termBeta.name = "Beta"
-local termGamma = prop + termBeta
-termGamma.name = "Gamma"
-termGamma:onValue(print)
-
-bus:plug(fr.fromTable{5, 4, 6, 9, 7})
+  bus:plug(fr.fromTable{5, 4, 6, 9, 7})
+end):runLog()
