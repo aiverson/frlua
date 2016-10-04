@@ -24,6 +24,7 @@ local function repeatStream(f)
         flag = true
         while flag and not reply do
           local nextStream = f(iterations)
+          iterations = iterations + 1
           flag = false
           if nextStream then
             unsub = nextStream:subscribe(handle)

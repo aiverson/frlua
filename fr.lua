@@ -8,6 +8,9 @@ local FR = {}
 
 local EventStream = require"fr.eventStream"
 
+require"fr.debounce"
+require"fr.debounceImmediate"
+
 FR.fromBinder = EventStream.fromBinder
 
 FR.once = require"fr.once"
@@ -17,6 +20,8 @@ FR.FromTable = FR.fromTable
 FR.Repeat = require"fr.repeat"
 FR.never = require"fr.never"
 FR.Never = FR.never
+FR.defer = require"fr.defer"
+FR.Defer = FR.defer
 
 FR.bus = require"fr.bus"
 FR.Bus = FR.bus

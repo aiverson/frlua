@@ -4,8 +4,8 @@ FRLua
 
 FRLua is a library inspired by Bacon.js to provide Functional Reactive programming capabilities in Lua.
 It is targeted at luajit 2.1 and lua >=5.1 <5.4.
-It is currently implemented in pure lua.
 This is version 0.1.3 of the library.  This package uses semver.
+It is currently implemented in pure lua.
 
 Most of the API is very similar to that of Bacon.js.
 
@@ -120,7 +120,7 @@ func can be anything allowed by the function construction rules.
 `FR.propertyFromBinder(func)` Creates a property from a binder function. The binder function has three arguments: a sink function, a preupdate function, and an updateReady function.
 The preupdate function must be called as soon as the property can be certain that it will generate an update this logical tick. It may be called multiple times for multiple inputs as long as each call has a paired updateReady call.
 The updateReady function must be called after preupdating. It returns a boolean indicating whether every incoming preupdate has had a corresponding updateReady call.
-The sink will propogate the event given to it to the properties subscribers as long as every pending preupdate has been readied.
+The sink will propogate the event given to it to the property's subscribers as long as every pending preupdate has been readied.
 
 The additional functions are used to provide the atomicity guarantees in property combiners. The requirement that the preupdate must be called as soon as the property can be certain that it will generate an update this tick ensures that any Properties that subscribe to this property and a property that is one of its inputs will wait for both to update before updating, which prevents extra updates containing incorrect values. See the atomicProperty test to see this in action.
 

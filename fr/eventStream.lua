@@ -125,7 +125,7 @@ local EventStream = {
       end)
   end,
   Not = function(self)
-     return self:map(function(val) return not val end)
+    return self:map(function(val) return not val end)
   end,
   pmap = function(self, f, ...)
     local mapFunc = createFunction(f, ...)
@@ -216,10 +216,10 @@ local EventStream = {
     end
   end,
   filter = function(self, f, ...)
-     local filterFunc = createFunction(f, ...)
-     if filterFunc == nil then
-	filterFunc = function(val) return val end
-     end
+    local filterFunc = createFunction(f, ...)
+    if filterFunc == nil then
+      filterFunc = function(val) return val end
+    end
     return fromBinder(function(sink)
         return self:subscribe(function(event, ...)
             if event == "Next" or event == "Initial" then
@@ -235,69 +235,69 @@ local EventStream = {
       end)
   end,
   flatMap = function(self, f, ...)
-     local mapFunc = createFunction(f, ...)
-     local childDeps = {}
-     local unsub
-     local done = false
-     local function streamHandler(sink, stream)
-	return function(event, value)
-	   if event == "End" then
-	      if childDeps[stream] then
-		 childDeps[stream]()
-		 childDeps[stream] = nil
-		 if not next(childDeps) and done then
-		    sink(event, value)
-		 end
-	      else
-		 childDeps[newStream] = nil
-		 if not next(childDeps) and done then
-		    sink(event, value)
-		 end
-		 return false
-	      end
-	   else
-	      sink(event, value)
-	   end
-	end
-     end
-     return fromBinder(
-	function(sink)
-	   for k, v in pairs(childDeps) do
-	      if v == false then
-		 childDeps[k] = k:subscribe(
-		    streamHandler(sink, k)
-		 )
-	      end
-	   end
-	   
-	   unsub = self:subscribe(
-	      function(event, value)
-		 if event == "Next" or event == "Initial" then
-		    local newStream = mapFunc(value)
-		    childDeps[newStream] = false
-		    childDeps[newStream] = newStream:subscribe(
-		       streamHandler(sink, newStream)
-		    )
-		 elseif event == "Error" then
-		    sink(event, value)
-		 elseif event == "End" then
-		    if not next(childDeps) then
-		       done = true
-		    else
-		       sink(event, value)
-		    end
-		 end
-	      end
-	   )
-	   return function()
-	      unsub()
-	      for k, v in pairs(childDeps) do
-		 v()
-	      end
-	   end
-	end
-     )
-		    
+    local mapFunc = createFunction(f, ...)
+    local childDeps = {}
+    local unsub
+    local done = false
+    local function streamHandler(sink, stream)
+      return function(event, value)
+        if event == "End" then
+          if childDeps[stream] then
+            childDeps[stream]()
+            childDeps[stream] = nil
+            if not next(childDeps) and done then
+              sink(event, value)
+            end
+          else
+            childDeps[stream] = nil
+            if not next(childDeps) and done then
+              sink(event, value)
+            end
+            return false
+          end
+        else
+          sink(event, value)
+        end
+      end
+    end
+    return fromBinder(
+      function(sink)
+        for k, v in pairs(childDeps) do
+          if v == false then
+            childDeps[k] = k:subscribe(
+              streamHandler(sink, k)
+            )
+          end
+        end
+
+        unsub = self:subscribe(
+          function(event, value)
+            if event == "Next" or event == "Initial" then
+              local newStream = mapFunc(value)
+              childDeps[newStream] = false
+              childDeps[newStream] = newStream:subscribe(
+                streamHandler(sink, newStream)
+              )
+            elseif event == "Error" then
+              sink(event, value)
+            elseif event == "End" then
+              if not next(childDeps) then
+                done = true
+              else
+                sink(event, value)
+              end
+            end
+          end
+        )
+        return function()
+          unsub()
+          for k, v in pairs(childDeps) do
+            v()
+          end
+        end
+      end
+    )
+
   end,
   zip = function(self, other, f, ...)
     local zipFunc = createFunction(f, ...)
@@ -353,7 +353,7 @@ EventStreamMetatable = {
 }
 
 function EventStream.isEventStream(obj)
-   return getmetatable(obj) == EventStreamMetatable
+  return getmetatable(obj) == EventStreamMetatable
 end
 
 return EventStream

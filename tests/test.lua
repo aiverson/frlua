@@ -16,7 +16,8 @@ end
 local test = {
   expectSequenceEqual = function(self, name, values)
     if not values then values, name = name, nil end
-    local idx = #self
+    local idx = #self + 1
+    self[idx] = false
     local i = 1
     local max = values.n or #values
     return function(val)
@@ -48,7 +49,8 @@ local test = {
   end,
   expectSequenceTableMatch = function(self, name, values)
     if not values then values, name = name, nil end
-    local idx = #self
+    local idx = #self + 1
+    self[idx] = false
     local i = 1
     local max = values.n or #values
     return function(val)
