@@ -1,4 +1,3 @@
-
 FRLua
 =====
 
@@ -9,7 +8,7 @@ It is currently implemented in pure lua.
 
 Most of the API is very similar to that of Bacon.js.
 
-##Observables
+## Observables
 There are two main types of object provided by this library: EventStreams and Properties.
 Both EventStreams and Properties are Observables.
 Properties have a concept of a current value; EventStreams do not.
@@ -17,7 +16,7 @@ Properties have a concept of a current value; EventStreams do not.
 All provided Observables will only perform a calculation when something is using the value they produce.
 This is implemented by having them automatically unsubscribe from their data sources when their last subscriber unsubscribes.
 
-##Events
+## Events
 There are four types of events that are propagated by the provided observables: Initial, Next, Error, and End.
 
 They are simply identified by the strings "Initial", "Next", "Error", and "End"
@@ -30,9 +29,9 @@ Error events are dispatched when an error occurs in an EventStream or Property. 
 
 End events are dispatched when an Observable ends. It should not emit any more events after the End Event. Preferably an Observable should become eligible for garbage collection soon after the End event.
 
-##API
+## API
 
-###Methods
+### Methods
 
 `observable:map(func)` creates a new Observable that produces values that are the result of applying func to the values produced by the source observable.
 func can be anything allowed by the function construction rules. 
@@ -99,9 +98,9 @@ func can be anything allowed by the function construction rules.
 
 `bus:plug(stream)` plugs a stream into the bus. Every event except the End event from the stream will be emitted by the bus. It returns a function that unplugs the stream.
 
-###Functions
+### Functions
 
-####Creation
+#### Creation
 
 `FR.fromBinder(func)` Creates an EventStream from a binder function. The binder function accepts a single argument: a function sink. The binder is expected to register an event handler in such a way that the sink function gets called with the event and the value. It should return an unsubscribe function to be called when the events aren't needed.
 
@@ -126,14 +125,14 @@ The additional functions are used to provide the atomicity guarantees in propert
 
 This function is intended primarily for internal use. Generally, any uses of this function should either be accomplished with `fromBinder(func):toProperty(val)` or a standard property combiner. If neither of these solutions is applicable, please raise an issue.
 
-####Manipulation
+#### Manipulation
 
 `FR.combineAsArray(props)` Accepts an arraylike table of Properties and returns a Property that has the value of an arraylike table of the values of the sources.
 
 `FR.combineTemplate(template)` Accepts a template table and creates a property that generates tables that are based off of the template but with every property in the template replaced by its value.
 The template can contain nested tables which are also traversed and substituted. The traversal is performed with `pairs`, so it will obey any metamethods that `pairs` does. The template is not expected to change once it has been passed to this function.
 
-####Miscellaneous
+#### Miscellaneous
 
 `FR.isEventStream(obj)` Returns true iff the object is an EventStream.
 
@@ -141,7 +140,7 @@ The template can contain nested tables which are also traversed and substituted.
 
 `FR.isObservable(obj)` Returns true iff the object is an Observable.
 
-####Function Construction Rules
+#### Function Construction Rules
 
 Several functions have a signature of "Anything allowed by the function construction rules". The function construction rules are as follows:
 
