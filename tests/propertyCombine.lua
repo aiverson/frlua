@@ -1,8 +1,7 @@
 --Copyright 2016 Alex Iverson
 
-local fr = require "fr"
-local test = require "tests.test"
-local xlua = require"xlua"
+local fr = require "./"
+local test = require "./tests/test"
 
 test("property combine", function(assertion)
   local array = fr.constant({

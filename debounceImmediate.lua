@@ -1,14 +1,14 @@
-local eventStream = require "fr.eventStream"
-local property = require "fr.property"
-local time = require "fr.time"
+--Copyright 2016-2018 Alex Iverson
 
-if time.hasGet then
-  function eventStream:debounceImmediate(delay)
-    local lastTime = time.getTime() - delay - 1
-    local stream = eventStream.fromBinder(function(sink)
+
+return function(FR)
+--if time.hasGet then
+  function FR.EventStream:debounceImmediate(delay)
+    local lastTime = FR.time.now() - delay - 1
+    local stream = FR.EventStream.fromBinder(function(sink)
         return self:subscribe(function(event, ...)
             if event == "Next" or event == "Initial" then
-              local nowTime = time.getTime()
+              local nowTime = FR.time.now()
               if nowTime - lastTime > delay then
                 sink(event, ...)
                 lastTime = nowTime
@@ -25,13 +25,13 @@ if time.hasGet then
     stream[2] = delay
     return stream
   end
-  function property:debounceImmediate(delay)
+  function FR.Property:debounceImmediate(delay)
     local lastTime
     local ready = true
-    local prop = property.fromBinder(function(sink, preupdate, updateReady)
+    local prop = FR.Property.fromBinder(function(sink, preupdate, updateReady)
         return self:subscribe(function(event, ...)
             if event == "Next" or event == "Initial" then
-              local nowTime = time.getTime()
+              local nowTime = FR.time.now()
               if ready then
                 updateReady()
                 sink(event, ...)
@@ -47,7 +47,7 @@ if time.hasGet then
             end
           end,
           function()
-            local nowTime = time.getTime()
+            local nowTime = FR.time.now()
             if nowTime - lastTime > delay then
               ready = true
               preupdate()
@@ -60,7 +60,7 @@ if time.hasGet then
     prop[1] = self
     prop[2] = delay
     return prop
-  end
+  end--[[
 elseif time.hasTimeout then
   function eventStream:debounceImmediate(delay)
     local ready = true
@@ -132,8 +132,9 @@ else
   function property:debounceImmediate()
     time.needGetOrTimeout()
   end
-end
+end]]
 
-return function(obj, delay)
-  return obj:debounceImmediate(delay)
+  function FR.debounceImmediate(obj, delay)
+    return obj:debounceImmediate(delay)
+  end
 end

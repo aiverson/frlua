@@ -1,7 +1,7 @@
 --Copyright 2016 Alex Iverson
 
-local fr = require"fr"
-local test = require"tests.test"
+local fr = require"./"
+local test = require"./tests/test"
 
 
 test("double map", function(assertion)

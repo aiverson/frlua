@@ -3,6 +3,7 @@ FRLua
 
 FRLua is a library inspired by Bacon.js to provide Functional Reactive programming capabilities in Lua.
 It is targeted at luajit 2.1 and lua >=5.1 <5.4.
+This version is specialized for use with luvi/lit/luvit.
 This is version 0.1.3 of the library.  This package uses semver.
 It is currently implemented in pure lua.
 

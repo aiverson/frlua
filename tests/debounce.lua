@@ -1,17 +1,6 @@
 
-package.path = "./?.lua;"..package.path
-
-local userTime = {}
-local luvTime = require"fr.time.luv"
-userTime.setInterval = luvTime.setInterval
-userTime.setTimeout = luvTime.setTimeout
-local posixTime = require"fr.time.posix"
-userTime.getTime = posixTime.getTime
-package.loaded["fr.time.user"] = userTime
-
-local time = require"fr.time"
-local fr = require"fr"
-local xlua = require"xlua"
+local fr = require"./".withFakeTime()
+--local xlua = require"xlua"
 
 local source = fr.fromTable{
   {0, 1},
@@ -39,6 +28,3 @@ source:each(io.flush)
 source:debounce(5):each(print, "debounce")
 source:debounceImmediate(5):each(print, "debounceImmediate")
 --time.setInterval(50, io.flush)
-
-
-require"luv".run()
